@@ -1,0 +1,37 @@
+{
+  "name": "privatecloud_api",
+  "version": "0.0.1",
+  "description": "Api para nube casera",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "start:dev": "nodemon ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./src/*.js",
+    "lint:fix": "eslint --fix ./src/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JAlmarza98/PrivateCloud_API.git"
+  },
+  "author": "Joel Almarza",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JAlmarza98/PrivateCloud_API/issues"
+  },
+  "homepage": "https://github.com/JAlmarza98/PrivateCloud_API#readme",
+  "dependencies": {
+    "cli-table": "^0.3.11",
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-fileupload": "^1.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-promise": "^6.0.0"
+  }
+}
