@@ -6,16 +6,18 @@ const os = require('os')
 const Table = require('cli-table')
 
 require('dotenv').config()
+const { version } = require('../package.json')
 const authRoutes = require('./routes/auth.routes')
+const Database = require('./config/database')
 const directoryRoutes = require('./routes/directories.routes')
 const filesRoutes = require('./routes/files.routes')
-const connectDb = require('./config/database')
-const { version } = require('../package.json')
 
 async function init () {
   const app = express()
 
-  await connectDb()
+  // Database
+  const database = new Database()
+  await database.init()
 
   // Middlewares
   app.use(cors())
@@ -50,9 +52,10 @@ async function init () {
         ['Network URL', `http://${ip}:${PORT}`]
       )
 
-      console.log(colors.green('\n PrivateCloud CORE START\n'))
+      console.log('===============API SERVER===============')
       console.log(`STATUS: ${colors.green('⦿ ONLINE')}`)
       console.log(`API Version: ${colors.green(version)}`)
+      console.log('========================================\n')
       console.log(table.toString())
     }
   )

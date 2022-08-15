@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const storage = process.env.HOME_CLOUD_STORAGE
 if (!storage) {
   console.error(

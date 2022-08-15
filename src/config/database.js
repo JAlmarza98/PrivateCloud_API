@@ -1,26 +1,22 @@
-const { Pool } = require('pg')
+const { connect } = require('mongoose')
 const colors = require('colors')
 
-const connectDb = async () => {
-  try {
-    const pool = new Pool({
-      user: process.env.PGUSER,
-      host: process.env.PGHOST,
-      database: process.env.PGDATABASE,
-      password: process.env.PGPASSWORD,
-      port: process.env.PGPORT
-    })
-
-    await pool.connect()
-    console.log('================DATABASE================')
-    console.log('STATUS: ', colors.green('ONLINE'))
-    console.log('DATABASE: ', colors.green(process.env.PGDATABASE))
-    console.log('========================================\n')
-  } catch (error) {
-    console.log('================DATABASE================')
-    console.log('STATUS: ', colors.red('OFFLINE'))
-    console.log('========================================\n')
+class Database {
+  async init () {
+    const MONGO_DB = process.env.DATABASE || 'mongodb+srv://localhost:27017/privateCloud'
+    try {
+      await connect(MONGO_DB)
+      const dbName = MONGO_DB.split('/').pop()
+      console.log('================DATABASE================')
+      console.log('STATUS: ', colors.green('⦿ ONLINE'))
+      console.log('DATABASE: ', colors.green(dbName))
+      console.log('========================================\n')
+    } catch (error) {
+      console.log('================DATABASE================')
+      console.log('STATUS: ', colors.red('⦿ OFFLINE'))
+      console.log('========================================\n')
+    }
   }
 }
 
-module.exports = connectDb
+module.exports = Database
