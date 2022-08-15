@@ -1,6 +1,6 @@
 {
   "name": "privatecloud_api",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Api para nube casera",
   "main": "./src/index.js",
   "scripts": {
