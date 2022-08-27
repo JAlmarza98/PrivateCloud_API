@@ -1,3 +1,5 @@
+const fs = require('fs')
+const path = require('path')
 const { sendLoginMail } = require('../middlewares/send-mail')
 const { generateJWT } = require('../middlewares/jwt')
 const bcrypt = require('bcrypt')
@@ -86,14 +88,35 @@ const validateUser = async (req, res) => {
       })
     }
 
+    if (user.name === name) {
+      return res.json({
+        success: false,
+        msg: 'No se puede usar ese nombre'
+      })
+    }
+
     password = bcrypt.hashSync(password, 10)
     const updateUser = await User.updateOne({ _id: userID }, { name, password })
 
     if (updateUser.modifiedCount !== 0) {
-      return res.json({
-        success: true,
-        msg: 'Has completado tu perfil, ya tienes acceso a la nube'
-      })
+      try {
+        fs.mkdir(path.join(process.env.HOME_CLOUD_STORAGE, name), { recursive: true }, (err) => {
+          if (err) {
+            return console.error(err)
+          }
+        })
+
+        return res.json({
+          success: true,
+          msg: 'Has completado tu perfil, ya tienes acceso a la nube. Ahora inicia sesión.'
+        })
+      } catch (err) {
+        console.log(err)
+        return res.json({
+          success: false,
+          msg: 'No se han podido completar su perfil'
+        })
+      }
     } else {
       return res.json({
         success: false,
