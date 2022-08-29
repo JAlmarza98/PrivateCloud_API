@@ -1,9 +1,17 @@
 const fs = require('fs')
+const { decodeJWT } = require('../middlewares/jwt')
 const processPath = require('../middlewares/paths')
 
 const getDirectoryContent = async (req, res) => {
   try {
-    const dirPath = processPath(req.params.path)
+    const token = req.headers.authorization
+    const user = decodeJWT(token).name
+    let dirPath
+    if (req.params.path) {
+      dirPath = processPath(`${user}_${req.params.path}`)
+    } else {
+      dirPath = processPath(user)
+    }
     const dir = await fs.promises.opendir(dirPath.absolutePath)
     const content = { files: [], directories: [] }
 
@@ -17,7 +25,9 @@ const getDirectoryContent = async (req, res) => {
     content.directories.sort()
     content.files.sort()
 
-    res.json({ path: dirPath.relativePath, content, success: true })
+    const path = dirPath.relativePath.replace(user, 'Home')
+
+    res.json({ path, content, success: true })
   } catch (err) {
     res.json({
       success: false,

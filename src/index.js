@@ -10,6 +10,7 @@ const { version } = require('../package.json')
 const authRoutes = require('./routes/auth.routes')
 const Database = require('./config/database')
 const directoryRoutes = require('./routes/directories.routes')
+const diskRoutes = require('./routes/disk.routes')
 const filesRoutes = require('./routes/files.routes')
 
 async function init () {
@@ -31,12 +32,14 @@ async function init () {
   const apiPaths = {
     auth: '/api/auth',
     directories: '/api/dir',
+    disk: '/api/disk',
     files: '/api/files'
   }
 
   // Routes
   app.use(apiPaths.auth, authRoutes)
   app.use(apiPaths.directories, directoryRoutes)
+  app.use(apiPaths.disk, diskRoutes)
   app.use(apiPaths.files, filesRoutes)
 
   // Server
