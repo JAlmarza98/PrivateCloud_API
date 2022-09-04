@@ -1,4 +1,5 @@
 const { decodeJWT } = require('../middlewares/jwt')
+const mime = require('mime-types')
 const { processPath, moveFile } = require('../middlewares/paths')
 
 const uploadFiles = async (req, res, next) => {
@@ -26,7 +27,6 @@ const uploadFiles = async (req, res, next) => {
         await moveFile(file, dirPath.absolutePath)
       }
     } catch (err) {
-    // Sys error
       if (err.code) {
         return next(err)
       }
@@ -49,4 +49,19 @@ const uploadFiles = async (req, res, next) => {
   }
 }
 
-module.exports = { uploadFiles }
+const downloadFiles = async (req, res, next) => {
+  const token = req.headers.authorization
+  try {
+    const user = decodeJWT(token).name
+    const dirPath = processPath(`${user}_${req.params.path}`)
+    const file = dirPath.absolutePath
+    const mimetype = mime.lookup(file)
+
+    res.setHeader('Content-Disposition', `attachment; filename=${file}`)
+    res.setHeader('Content-Type', mimetype)
+    res.download(file)
+  } catch (err) {
+    next(err)
+  }
+}
+module.exports = { uploadFiles, downloadFiles }
