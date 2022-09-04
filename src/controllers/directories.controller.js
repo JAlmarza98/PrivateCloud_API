@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const { decodeJWT } = require('../middlewares/jwt')
-const processPath = require('../middlewares/paths')
+const { processPath } = require('../middlewares/paths')
 
 const getDirectoryContent = async (req, res) => {
   try {
