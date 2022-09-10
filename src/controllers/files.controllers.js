@@ -21,7 +21,7 @@ const uploadFiles = async (req, res, next) => {
       dirPath = processPath(user)
     }
 
-    const files = req.files.files
+    const files = [req.files.file]
     try {
       for (const file of files) {
         await moveFile(file, dirPath.absolutePath)
@@ -33,18 +33,18 @@ const uploadFiles = async (req, res, next) => {
 
       return res.status(400).json({
         success: false,
-        message: err.message,
-        path: dirPath.relativePath
+        msg: err.message
       })
     }
 
     res.json({
-      msg: 'subir archivos',
-      dirPath
+      success: true,
+      msg: 'archivos subidos'
     })
   } catch (error) {
     res.json({
-      msg: 'subir archivos'
+      success: false,
+      msg: 'Ha ocurrido un error inesperado, por favor pongase en contacto con el administrador del servicio'
     })
   }
 }
